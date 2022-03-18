@@ -6,6 +6,8 @@ import {
   startLoginWithEmailPassword,
 } from "../../actions/auth";
 import { useForm } from "../../hooks/useForm";
+import validator from "validator";
+import Swal from "sweetalert2";
 
 export const LoginScreen = () => {
   const dispatch = useDispatch();
@@ -17,8 +19,19 @@ export const LoginScreen = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(email, password);
-    dispatch(startLoginWithEmailPassword(email, password));
+
+    if (
+      validator.isEmpty(email) ||
+      password === undefined ||
+      email === undefined ||
+      validator.isEmpty(password)
+    ) {
+      Swal.fire("Error", "You must to set ur email and password", "error");
+      console.log("error en la validacion");
+    } else {
+      console.log(email, password);
+      dispatch(startLoginWithEmailPassword(email, password));
+    }
   };
 
   const handleGoogleLogin = () => {

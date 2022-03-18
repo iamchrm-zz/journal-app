@@ -1,6 +1,7 @@
 import { types } from "../types/types";
 import { firebase, googleAuth } from "../firebase/firebaseConfig";
 import { finishLoadingAction, startLoadingAction } from "./ui";
+import Swal from "sweetalert2";
 export const startLoginWithEmailPassword = (email, password) => {
   return (dispatch) => {
     dispatch(startLoadingAction());
@@ -14,6 +15,7 @@ export const startLoginWithEmailPassword = (email, password) => {
       .catch((e) => {
         dispatch(finishLoadingAction());
         console.log(e);
+        Swal.fire("Error", e.message, "error");
       });
   };
 };
@@ -31,7 +33,8 @@ export const startRegister = (email, password, name) => {
         dispatch(login(user.uid, user.displayName));
       })
       .catch((e) => {
-        console.log(e);
+        dispatch(finishLoadingAction());
+        Swal.fire("Error", e.message, "error");
       });
   };
 };
@@ -54,3 +57,13 @@ export const login = (uid, displayName) => {
     },
   };
 };
+
+export const startlogout = () => {
+  return async (dispatch) => {
+    firebase.auth().signOut();
+    dispatch(logout());
+  };
+};
+export const logout = () => ({
+  type: types.logout,
+});
