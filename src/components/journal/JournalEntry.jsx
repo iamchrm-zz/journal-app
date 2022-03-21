@@ -1,30 +1,41 @@
+import moment from "moment";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { activeNote } from "../../actions/notes";
 
-export const JournalEntry = () => {
+export const JournalEntry = ({ id, date, title, body, url }) => {
+  const noteDate = moment(date);
+  const dispatch = useDispatch();
+  const handleActiveNote = () => {
+    dispatch(
+      //enviar los popriedades a la funcion
+      activeNote(id, {
+        date,
+        title,
+        body,
+      })
+    );
+  };
   return (
-    <div className="journal__entry pointer">
-      <div
-        className="journal__entry-picture"
-        style={{
-          backgroundSize: "cover",
-          backgroundImage:
-            "url(https://clickup.com/blog/wp-content/uploads/2020/01/note-taking.png)",
-        }}
-      ></div>
+    <div className="journal__entry pointer" onClick={handleActiveNote}>
+      {url && (
+        <div
+          className="journal__entry-picture"
+          style={{
+            backgroundSize: "cover",
+            backgroundImage: `url(${url})`,
+          }}
+        ></div>
+      )}
 
       <div className="journal__entry-body">
-        <p className="journal__entry-title">Un nuevo dia</p>
-        <p className="journal__entry-content">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae
-          similique, voluptatibus asperiores, debitis enim alias ipsa velit
-          mollitia impedit tempora commodi harum beatae repellat eligendi
-          tempore iure quos. Minus, reiciendis?
-        </p>
+        <p className="journal__entry-title">{title}</p>
+        <p className="journal__entry-content">{body}</p>
       </div>
 
       <div className="journal__entry-date-box">
-        <span>Monday</span>
-        <h4>4</h4>
+        <span>{noteDate.format("dddd")}</span>
+        <h4>{noteDate.format("Do")}</h4>
       </div>
     </div>
   );

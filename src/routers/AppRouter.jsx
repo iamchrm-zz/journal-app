@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { JournalScreen } from "../components/journal/JournalScreen";
 import { AuthRouter } from "./AuthRouter";
 import { firebase } from "../firebase/firebaseConfig";
@@ -9,7 +9,7 @@ import { login } from "../actions/auth";
 import { LoadingScreen } from "../components/loading/LoadingScreen";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
-import Swal from "sweetalert2";
+import { startLoadingNotes } from "../actions/notes";
 
 export const AppRouter = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,11 +19,13 @@ export const AppRouter = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     //onAuthStateChanged es un observable que esta pendiente al estado del login de la aplicacion
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(async (user) => {
       console.log("user logged: " + user);
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
         setIsLoggedIn(true);
+        // luego hacemos un dispatch a la accion pasandole el uid del usuario logeado
+        dispatch(startLoadingNotes(user.uid));
       } else {
         setIsLoggedIn(false);
       }

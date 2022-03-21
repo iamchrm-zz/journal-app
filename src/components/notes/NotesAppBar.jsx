@@ -1,10 +1,23 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startSaveNote } from "../../actions/notes";
 
 export const NotesAppBar = () => {
   const [check, setCheck] = useState(true);
+  const { loading } = useSelector((state) => state.notes);
+  const dispatch = useDispatch();
   const handleCheckFavorite = () => {
     setCheck(!check);
     console.log("Set favorite to " + check);
+  };
+
+  const { active } = useSelector((state) => state.notes);
+
+  const handleSave = () => {
+    console.log("guardando nota");
+
+    dispatch(startSaveNote(active));
+    console.log("nota guardada");
   };
   return (
     <div className="notes__appbar">
@@ -24,12 +37,17 @@ export const NotesAppBar = () => {
         <button className="btn">
           <span
             className=""
+            onClick={handleSave}
             style={{
               display: "flex",
               flexDirection: "column",
             }}
           >
-            <i className="fa-solid fa-floppy-disk fa-2x"></i>
+            {loading ? (
+              <i className="fa-solid fa-spinner spinner fa-2x"></i>
+            ) : (
+              <i className="fa-solid fa-cloud-arrow-up fa-2x"></i>
+            )}
             save
           </span>
         </button>
@@ -41,7 +59,7 @@ export const NotesAppBar = () => {
             }}
           >
             {check ? (
-              <i class="fa-regular fa-bookmark fa-2x"></i>
+              <i className="fa-regular fa-bookmark fa-2x"></i>
             ) : (
               <i className="fa-solid fa-bookmark fa-2x"></i>
             )}
