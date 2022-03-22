@@ -8,8 +8,15 @@
 # testing
 /coverage
 
-# production
-/build
+# # production
+# /build
+
+#DEVELOPMENT
+/src
+/public
+.JournalApp.code-workspace.json
+package-lock.json
+package.json
 
 # misc
 .DS_Store
