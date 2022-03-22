@@ -4,19 +4,18 @@ import { startSaveNote } from "../../actions/notes";
 
 export const NotesAppBar = () => {
   const [check, setCheck] = useState(true);
-  const { loading } = useSelector((state) => state.notes);
   const dispatch = useDispatch();
   const handleCheckFavorite = () => {
     setCheck(!check);
     console.log("Set favorite to " + check);
   };
 
-  const { active } = useSelector((state) => state.notes);
-
+  const { active, saveNoteLoad } = useSelector((state) => state.notes);
+  console.log(saveNoteLoad);
   const handleSave = () => {
+    dispatch(startSaveNote(active));
     console.log("guardando nota");
 
-    dispatch(startSaveNote(active));
     console.log("nota guardada");
   };
   return (
@@ -43,7 +42,7 @@ export const NotesAppBar = () => {
               flexDirection: "column",
             }}
           >
-            {loading ? (
+            {saveNoteLoad ? (
               <i className="fa-solid fa-spinner spinner fa-2x"></i>
             ) : (
               <i className="fa-solid fa-cloud-arrow-up fa-2x"></i>

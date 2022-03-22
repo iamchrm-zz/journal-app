@@ -42,22 +42,27 @@ export const setNotes = (notes) => ({
 
 export const startSaveNote = (note) => {
   return async (dispatch, getState) => {
-    dispatch(startNotesLoadingAction());
     const { uid } = getState().auth;
 
     const noteToFirestore = { ...note };
     delete noteToFirestore.id;
 
     await db
+
       .doc(`${uid}/journal/notes/${note.id}`)
       .update(noteToFirestore)
+
       .then(
+        //todo: I NEED SEARCH A WAY TO SET THE STATE OF THE SAVELOADING NOTE TO TRUE AND FINISH IT.
+        //TODO: I FOUND A WAY BUT NO IT'S THE BEST WAY.
         dispatch(refreshNote(note.id, noteToFirestore)),
-        dispatch(finishNotesLoadingAction())
+        dispatch(startNotesSaveLoadingAction()),
+        setTimeout(() => {
+          dispatch(finishNotesSaveLoadingAction());
+        }, 2000)
       )
       .catch((e) => {
-        dispatch(finishNotesLoadingAction());
-        console.log(e);
+        dispatch(finishNotesSaveLoadingAction());
         Swal.fire("Error", e.message, "error");
       });
   };
@@ -79,4 +84,11 @@ export const startNotesLoadingAction = () => ({
 });
 export const finishNotesLoadingAction = () => ({
   type: types.notesFinishLoading,
+});
+
+export const startNotesSaveLoadingAction = () => ({
+  type: types.noteSaveStartLoading,
+});
+export const finishNotesSaveLoadingAction = () => ({
+  type: types.noteSaveFinishLoading,
 });

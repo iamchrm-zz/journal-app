@@ -23,6 +23,7 @@ export const notesReducer = (state = initialState, action) => {
     case types.notesUpdate:
       return {
         ...state,
+
         notes: state.notes.map((note) =>
           note.id === action.payload.id ? action.payload.note : note
         ),
@@ -39,6 +40,21 @@ export const notesReducer = (state = initialState, action) => {
         ...state,
         loading: false,
       };
+
+    case types.noteSaveStartLoading:
+      return {
+        ...state,
+        loading: false,
+        saveNoteLoad: true,
+      };
+
+    case types.noteSaveFinishLoading:
+      return {
+        ...state,
+        loading: false,
+        saveNoteLoad: false,
+      };
+
     default:
       return state;
   }
