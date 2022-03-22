@@ -7,9 +7,9 @@ export const JournalEntries = () => {
   const { notes, loading } = useSelector((state) => state.notes);
 
   return (
-    <div className="journal__entries">
+    <div className="journal__entries animate__animated animate__fadeIn animate__faster">
       {loading ? (
-        <div className="loading-notes">
+        <div className="loading-notes animate__animated animate__fadeIn animate__faster">
           <i className="fa-solid fa-spinner spinner fa-2x"></i>
         </div>
       ) : (

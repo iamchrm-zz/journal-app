@@ -17,4 +17,5 @@ export const types = {
   notesFinishLoading: "[Notes] Finish loading",
   noteSaveStartLoading: "[Notes] Start save loading",
   noteSaveFinishLoading: "[Notes] Start finish loading",
+  notesLogoutCleaning: "[Notes] Notes logout cleaning",
 };
